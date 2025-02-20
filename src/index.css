@@ -1,0 +1,49 @@
+:root {
+  font-family: Arial, Inter, system-ui, Avenir, Helvetica, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --primary-bg-color: rgb(186, 73, 73);
+  --secondary-bg-color: rgb(56, 133, 138);
+  --third-bg-color: rgb(57, 112, 151);
+}
+
+html {
+  background-color: var(--primary-bg-color);
+  transition: background-color 0.6s ease-in-out;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ant-tabs-tab-active {
+  font-weight: bold;
+}
+
+.ant-menu-item-selected {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.ant-modal-close:hover {
+  background-color: white !important;
+}
+
+.ant-switch-checked {
+  background-color: rgba(132, 199, 51, 0.8) !important;
+}

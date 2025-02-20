@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px auto 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 20px 0 30px;
+  max-width: 480px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.actionButton {
+  text-transform: uppercase;
+  cursor: pointer;
+  border: medium;
+  padding: 0 12px;
+  border-radius: 4px;
+  font-size: 22px;
+  height: 55px;
+  font-weight: bold;
+  width: 200px;
+  background-color: white;
+  box-shadow: rgba(235, 235, 235, 1) 0px 6px 0px;
+}
+
+.skipIcon {
+  font-size: 40px;
+  position: absolute;
+  right: 60px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s linear;
+}
+
+.skipIcon:hover {
+  opacity: 0.8;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (max-width: 768px) {
+  .skipIcon {
+    right: 20px;
+  }
+}

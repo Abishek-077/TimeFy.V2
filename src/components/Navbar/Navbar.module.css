@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: inherit;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.logo h1 {
+  color: white;
+  font-size: 20px;
+  margin: 0;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: inherit;
+  gap: 4px;
+  justify-content: flex-end;
+  height: 32px;
+}
+
+.menu > li {
+  border-radius: 4px !important;
+  background-color: rgba(255, 255, 255, 0.1);
+  line-height: 32px;
+}
+
+@media screen and (max-width: 768px) {
+  .menu > li > span {
+    display: none;
+  }
+}

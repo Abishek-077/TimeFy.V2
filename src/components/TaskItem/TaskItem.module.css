@@ -1,0 +1,148 @@
+.taskItem {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 18px 14px 0;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-top: 8px;
+  font-size: 16px;
+  transition: unset;
+  box-shadow: none;
+  transform: translateY(2px);
+  border-left: 6px solid white;
+}
+
+.taskItem:hover {
+  border-left: 6px solid rgb(204, 204, 204);
+}
+
+.taskItem.selected {
+  border-left: 6px solid rgb(34, 34, 34);
+}
+
+.taskItem > .status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.taskItem .statusLeft {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-wrap: break-word;
+  width: 75%;
+}
+
+.taskItem .checkIcon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-color: rgb(223, 223, 223);
+  border: none;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.taskItem .checkIcon:hover {
+  opacity: 0.8;
+}
+
+.taskItem .checkIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.taskItem .checkIcon.done {
+  background-color: rgb(186, 73, 73);
+}
+
+.taskItem .title {
+  color: rgb(85, 85, 85);
+  font-weight: bold;
+  width: 85%;
+  overflow: hidden;
+  line-height: 1.5em;
+  overflow-wrap: break-word;
+}
+
+.taskItem .title.titleDone {
+  font-weight: bold;
+  text-decoration: line-through;
+  line-height: 1.5em;
+  color: rgb(170, 170, 170);
+}
+
+.taskItem .statusRight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.taskItem .statusRight > .doneTime {
+  display: inline-block;
+  color: rgb(170, 170, 170);
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.taskItem .statusRight > .doneTime > span {
+  font-size: 14px;
+  margin-right: 2px;
+}
+
+.taskItem .statusRight > .more {
+  border: 1px solid rgb(223, 223, 223);
+  border-radius: 4px;
+  padding: 2px 4px;
+  width: 20px;
+  transform: rotate(90deg);
+}
+
+.taskItem .statusRight > .more:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.taskItem .statusRight > .more > svg {
+  width: 18px;
+  opacity: 0.4;
+  color: black;
+}
+
+.noteContainer {
+  padding-left: 30px;
+  padding-bottom: 12px;
+  padding-right: 18px;
+  user-select: text;
+  cursor: text;
+}
+
+.noteWrapper {
+  position: relative;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px;
+  background-color: rgb(252, 248, 222);
+}
+
+.note {
+  font-size: 15px;
+  margin-top: 0;
+  margin-bottom: 0;
+  white-space: pre-wrap;
+  color: rgb(96, 85, 21);
+  padding: 10px 12px;
+  word-break: break-word;
+}
+
+@media screen and (max-width: 450px) {
+  .taskItem .statusLeft {
+    width: 60%;
+  }
+}
