@@ -1,4 +1,4 @@
-.timer {
+/* .timer {
   font-size: 120px;
   font-weight: bold;
   color: white;
@@ -8,5 +8,27 @@
 @media screen and (max-width: 786px) {
   .timer {
     font-size: 100px;
+  }
+} */
+.timer {
+  font-size: 120px;
+  font-weight: bold;
+  color: transparent;
+  text-align: center;
+  background: linear-gradient(90deg, #ffffff, #ff7e5f); /* White to light orange gradient */
+  -webkit-background-clip: text; /* Apply gradient to text */
+  background-clip: text;
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for a clean look */
+  letter-spacing: 2px; /* Adds slight spacing between letters for elegance */
+  transition: transform 0.3s ease-in-out; /* Smooth scaling effect */
+}
+
+.timer:hover {
+  transform: scale(1.05); /* Slight zoom-in effect on hover */
+}
+
+@media screen and (max-width: 786px) {
+  .timer {
+    font-size: 100px; /* Adjust font size for smaller screens */
   }
 }
