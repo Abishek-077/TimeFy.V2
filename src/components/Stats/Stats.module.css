@@ -4,6 +4,11 @@
   border-top: 1px solid rgba(255, 255, 255, 0.8);
   text-align: center;
   background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer; /* Makes it clear that it's clickable */
+}
+
+.container:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .item {
