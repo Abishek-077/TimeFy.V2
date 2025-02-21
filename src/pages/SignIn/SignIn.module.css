@@ -135,6 +135,29 @@
   opacity: 0.7;
 }
 
+.signUpButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  padding: 12px;
+  margin-top: 16px;
+  height: 46px;
+  background-color: rgb(0, 123, 255); /* Blue color for Sign Up */
+  border: 2px solid rgb(0, 123, 255);
+  width: 100%;
+}
+
+.signUpButton:hover {
+  background-color: rgb(0, 105, 217);
+  border-color: rgb(0, 105, 217);
+}
+
+
 @media only screen and (max-width: 768px) {
   .logo {
     width: 200px;
