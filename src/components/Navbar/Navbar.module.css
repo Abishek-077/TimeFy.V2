@@ -12,10 +12,14 @@
   align-items: center;
   gap: 4px;
 }
+.logo a img{
+  width: 60px;
+  height: auto;
+}
 
 .logo h1 {
-  color: white;
-  font-size: 20px;
+  color: rgb(255, 255, 255);
+  font-size: 25px;
   margin: 0;
 }
 

@@ -68,11 +68,11 @@ const Navbar = () => {
         <div className={style.logo}>
           <Link to='/'>
             <img
-              src='https://pomofocus.io/images/icon-white2.png'
+              src='public/clocklogo.png'
               alt='logo'
               style={{ width: 20, height: 20 }}
             />
-            <h1>Pomofocus</h1>
+            <h1>Timefy</h1>
           </Link>
         </div>
 
