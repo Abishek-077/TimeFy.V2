@@ -4,7 +4,6 @@
     "description": "",
     "main": "index.js",
     "type": "module",
-
     "scripts": {
         "start:dev": "nodemon app.js",
         "migrate": "npx sequelize-cli db:migrate",
@@ -18,7 +17,7 @@
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.1.1",
-        "dotenv": "^16.4.1",
+        "dotenv": "^16.4.7",
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.2",
         "pg": "^8.11.3",
