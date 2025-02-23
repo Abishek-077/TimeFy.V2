@@ -1,99 +1,143 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
-  const response = await fetch('/tasks');
-  return response.json();
-});
+const getInitialState = () => {
+  const state = {};
+  state.tasks = [];
+  state.selectedTask = null;
+  state.setting = {
+    autoCheckTasks: false,
+    autoSwitchTasks: true,
+  };
+  return state;
+};
+
+const checkOne = (state, action, toggle = true) => {
+  const { id } = action.payload;
+  const task = state.tasks.find((task) => task.id === id);
+  if (toggle && task.done) {
+    state.tasks = state.tasks.map((task) => {
+      if (task.id === id) {
+        task.done = !task.done;
+      }
+      return task;
+    });
+  } else {
+    task.done = true;
+    if (state.setting.autoSwitchTasks) {
+      state.tasks = state.tasks.filter((task) => task.id !== id);
+      state.tasks.push(task);
+      state.selectedTask = state.tasks[0];
+    }
+  }
+};
 
 export const taskSlice = createSlice({
   name: 'task',
-  initialState: {
-    tasks: [],
-    loading: false,
-    error: null,
-  },
+  initialState: getInitialState(),
   reducers: {
-    addTask: (state, action) => {
-      state.tasks.push(action.payload); // Add a new task
-    },
-    updateTask: (state, action) => {
-      const index = state.tasks.findIndex((task) => task.id === action.payload.id);
-      if (index !== -1) {
-        state.tasks[index] = action.payload; // Update task
+    save: (state, action) => {
+      state.tasks.push({
+        id: Math.random(),
+        done: false,
+        act: 0,
+        ...action.payload,
+      });
+      if (!state.selectedTask) {
+        state.selectedTask = state.tasks[0];
       }
     },
-    deleteTask: (state, action) => {
-      state.tasks = state.tasks.filter((task) => task.id !== action.payload); // Delete task
+    select: (state, action) => {
+      state.selectedTask = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchTasks.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchTasks.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = action.payload;
-      })
-      .addCase(fetchTasks.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+    check: (state, action) => {
+      checkOne(state, action);
+    },
+    doOne: (state) => {
+      if (!state.selectedTask) {
+        return;
+      }
+      state.selectedTask.act += 1;
+      state.tasks = state.tasks.map((task) => {
+        if (task.id === state.selectedTask.id) {
+          task.act += 1;
+        }
+        return task;
       });
+      if (state.selectedTask.act >= state.selectedTask.est) {
+        if (state.setting.autoCheckTasks) {
+          checkOne(
+            state,
+            {
+              payload: {
+                id: state.selectedTask.id,
+              },
+            },
+            false
+          );
+        }
+        if (state.setting.autoSwitchTasks) {
+          for (const task of state.tasks) {
+            if (!task.done) {
+              state.selectedTask = task;
+              return;
+            }
+          }
+        }
+      }
+    },
+    deleteOne: (state, action) => {
+      state.tasks = state.tasks.filter((task) => task.id !== action.payload);
+      if (state.selectedTask.id === action.payload) {
+        state.selectedTask = null;
+      }
+    },
+    update: (state, action) => {
+      state.tasks = state.tasks.map((task) => {
+        if (task.id === action.payload.id) {
+          return action.payload;
+        }
+        return task;
+      });
+      state.selectedTask = state.tasks.find(
+        (task) => task.id === state.selectedTask.id
+      );
+    },
+    clearFinished: (state) => {
+      state.tasks = state.tasks.filter((task) => !task.done);
+      state.selectedTask = state.tasks.find(
+        (task) => task.id === state.selectedTask.id
+      );
+    },
+    clearAll: (state) => {
+      state.tasks = [];
+      state.selectedTask = null;
+    },
+    clearActPomo: (state) => {
+      state.tasks = state.tasks.map((task) => {
+        task.act = 0;
+        return task;
+      });
+    },
+    changeSetting: (state, action) => {
+      state.setting = {
+        ...state.setting,
+        ...action.payload,
+      };
+    },
   },
 });
 
-export const { addTask, updateTask, deleteTask } = taskSlice.actions;
+export const {
+  save,
+  select,
+  check,
+  doOne,
+  deleteOne,
+  update,
+  changeSetting,
+  clearActPomo,
+  clearAll,
+  clearFinished,
+} = taskSlice.actions;
 
 export default taskSlice.reducer;
-
-
-// import React, { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchTasks, addTask, deleteTask, updateTask } from "../redux/taskSlice";
-
-// const Task = () => {
-//   const dispatch = useDispatch();
-//   const { tasks, loading, error } = useSelector((state) => state.task);
-
-//   useEffect(() => {
-//     dispatch(fetchTasks());
-//   }, [dispatch]);
-
-//   // Handler to add a task
-//   const handleAddTask = () => {
-//     const newTask = { title: "New Task", status: false };
-//     dispatch(addTask(newTask));
-//   };
-
-//   // Handler to delete a task
-//   const handleDeleteTask = (id) => {
-//     dispatch(deleteTask(id));
-//   };
-
-//   // Handler to update task status
-//   const handleUpdateTask = (task) => {
-//     dispatch(updateTask({ ...task, status: !task.status }));
-//   };
-
-//   // Error handling and loading states
-//   if (loading) return <p>Loading tasks...</p>;
-//   if (error) return <p>Error: {error}</p>;
-
-//   return (
-//     <div>
-//       <h2>Task List</h2>
-//       <button onClick={handleAddTask}>Add Task</button>
-//       <ul>
-//         {tasks.map((task) => (
-//           <li key={task.id}>
-//             <span>{task.title} - {task.status ? "Completed" : "Pending"}</span>
-//             <button onClick={() => handleUpdateTask(task)}>Toggle Status</button>
-//             <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Task;
