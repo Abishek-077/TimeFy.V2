@@ -1,26 +1,42 @@
-// module.exports = (sequelize, DataTypes) => {
-//   const Task = sequelize.define('Task', {
-//     title: {
-//       type: DataTypes.STRING,
-//       allowNull: false
-//     },
-//     status: {
-//       type: DataTypes.BOOLEAN,
-//       defaultValue: false
-//     },
-//     est: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false
-//     },
-//     act: {
-//       type: DataTypes.INTEGER,
-//       defaultValue: 0
-//     },
-//     note: {
-//       type: DataTypes.TEXT,
-//       allowNull: true
-//     }
-//   });
+module.exports = (sequelize, DataTypes) => {
+  const Task = sequelize.define('Task', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    done: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    act: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    est: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+  });
 
-//   return Task;
-// };
+  Task.associate = (models) => {
+    Task.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'user',
+    });
+  };
+
+  return Task;
+};

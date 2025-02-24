@@ -1,10 +1,46 @@
-// const express = require('express');
-// const router = express.Router();
-// const taskController = require('../controllers/taskController');
+// routes/taskRoutes.js
+const express = require('express');
+const {
+  createTask,
+  getTasks,
+  selectTask,
+  toggleTaskDone,
+  incrementAct,
+  deleteTask,
+  updateTask,
+  clearFinishedTasks,
+  clearAllTasks,
+  resetActPomo,
+  changeSetting,
+} = require('../controllers/taskController');
+const router = express.Router();
 
-// router.get('/', taskController.getTasks);
-// router.post('/', taskController.createTask);
-// router.put('/:id', taskController.updateTask);
-// router.delete('/:id', taskController.deleteTask);
+router.route('/')
+  .get(getTasks)  // Get all tasks
+  .post(createTask);  // Create a new task
 
-// module.exports = router;
+router.route('/:taskId')
+  .get(selectTask)  // Select a task
+  .patch(updateTask)  // Update a task
+  .delete(deleteTask);  // Delete a task
+
+// Additional routes for specific actions
+router.route('/:taskId/done')
+  .patch(toggleTaskDone);  // Toggle done status
+
+router.route('/:taskId/increment')
+  .patch(incrementAct);  // Increment act count
+
+router.route('/clear-finished')
+  .delete(clearFinishedTasks);  // Clear finished tasks
+
+router.route('/clear-all')
+  .delete(clearAllTasks);  // Clear all tasks
+
+router.route('/reset-act-pomo')
+  .patch(resetActPomo);  // Reset act count for all tasks
+
+router.route('/settings')
+  .patch(changeSetting);  // Change task settings
+
+module.exports = router;
