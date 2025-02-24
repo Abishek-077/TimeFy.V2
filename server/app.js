@@ -1,10 +1,10 @@
 require('dotenv').config({ path: `${process.cwd()}/.env` });
 const express = require('express');
 
-const authRouter = require('./route/authRoute');
+const authRouter = require('./routes/authRoutes');
 const catchAsync = require('./utils/catchAsync');
 const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controller/errorController');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
