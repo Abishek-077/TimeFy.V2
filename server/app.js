@@ -31,3 +31,5 @@ const PORT = process.env.APP_PORT || 5000;
 app.listen(PORT, () => {
     console.log('Server up and running on port', PORT);
 });
+
+module.exports = app;  // Export app instance

@@ -1,53 +1,76 @@
 const request = require('supertest');
-const app = require('../../app');  // Your Express app instance
-const { sequelize } = require('../../models'); // Sequelize instance
-const User = require('../../models/user'); // User model
-const catchAsync = require('../../utils/catchAsync'); // Utility for async functions
-
-jest.mock('../../models/user'); // Mocking the User model
+const app = require('../../app'); // Adjust the path as necessary
+const { sequelize, User } = require('../../models'); // Adjust to import the correct models
 
 describe('User Controller - getAllUser', () => {
-  beforeAll(async () => {
-    // Sync the database before running tests
-    await sequelize.sync({ force: true });
-  });
+    let token;
 
-  afterAll(async () => {
-    // Clean up after tests
-    await sequelize.close();
-  });
+    beforeAll(async () => {
+        console.log('Syncing database...');
+        // Sync the database (reset tables)
+        await sequelize.sync({ force: true });
 
-  it('should get all users excluding the password field', async () => {
-    // Mock the User.findAndCountAll method
-    User.findAndCountAll.mockResolvedValue({
-      count: 2,
-      rows: [
-        { id: 1, email: 'user1@example.com', userType: '1', password: 'hashedPassword' },
-        { id: 2, email: 'user2@example.com', userType: '2', password: 'hashedPassword' },
-      ],
+        console.log('Creating a test user...');
+        // Create a test user in the database
+        await User.create({
+            email: 'admin@example.com',
+            password: 'password',
+            role: '0', // Admin role
+        });
+
+        console.log('Performing login to get token...');
+        // Perform login to get the token with role '0' (admin)
+        const response = await request(app)
+            .post('/api/v1/auth')
+            .send({ email: 'admin@example.com', password: 'password' });
+
+        console.log('Login response:', response.body); // Log login response for debugging
+        token = response.body.token;
+
+        if (!token) {
+            throw new Error('Login failed, no token received');
+        }
     });
 
-    const response = await request(app).get('/api/users'); // Adjust path to your route
+    it('should get all users excluding the password field', async () => {
+        console.log('Sending request to get all users...');
+        const response = await request(app)
+            .get('/api/v1/users')
+            .set('Authorization', `Bearer ${token}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body.status).toBe('success');
-    expect(response.body.data.count).toBe(2);
-    expect(response.body.data.rows[0].password).toBeUndefined();
-    expect(response.body.data.rows[0].email).toBe('user1@example.com');
-  });
+        console.log('Get all users response:', response.body); // Log the response for debugging
 
-  it('should return an empty array when no users match the condition', async () => {
-    // Mock the case where no users match the condition
-    User.findAndCountAll.mockResolvedValue({
-      count: 0,
-      rows: [],
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('success');
+        expect(response.body.data.count).toBeGreaterThan(0);
+        expect(response.body.data.rows[0].password).toBeUndefined();
     });
 
-    const response = await request(app).get('/api/users'); // Adjust path to your route
+    it('should return an empty array when no users match the condition', async () => {
+        console.log('Clearing users...');
+        // Clear users or ensure no users match the condition
+        await User.destroy({ where: {} });
 
-    expect(response.status).toBe(200);
-    expect(response.body.status).toBe('success');
-    expect(response.body.data.count).toBe(0);
-    expect(response.body.data.rows).toEqual([]);
-  });
+        console.log('Sending request to get all users...');
+        const response = await request(app)
+            .get('/api/v1/users')
+            .set('Authorization', `Bearer ${token}`);
+
+        console.log('Get all users (empty) response:', response.body); // Log the response for debugging
+
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('success');
+        expect(response.body.data.count).toBe(0);
+        expect(response.body.data.rows).toEqual([]);
+    });
+
+    afterAll(async () => {
+        console.log('Cleaning up test data...');
+        // Clean up the test data
+        await User.destroy({ where: {} });
+
+        console.log('Resetting tables...');
+        // Optionally, reset all tables
+        await sequelize.sync({ force: true });
+    });
 });
