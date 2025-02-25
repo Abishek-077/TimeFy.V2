@@ -17,6 +17,7 @@
     "license": "ISC",
     "dependencies": {
         "bcrypt": "^5.1.1",
+        "chalk": "^5.4.1",
         "dotenv": "^16.4.1",
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.2",
