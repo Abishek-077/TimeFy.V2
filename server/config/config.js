@@ -9,13 +9,15 @@ module.exports = {
         port: process.env.DB_PORT,
         dialect: 'postgres',
         seederStorage: 'sequelize',
+        migrationStorage: 'json',
+        migrationStoragePath: `${process.cwd()}/server/migrations`,  // Correct path here
     },
     test: {
         username: 'root',
         password: null,
         database: 'database_test',
         host: '127.0.0.1',
-        dialect: 'sqlite',  // Fixed typo here
+        dialect: 'sqlite',
         storage: process.env.TEST_DB_NAME // Use SQLite database for tests
     },
     production: {
