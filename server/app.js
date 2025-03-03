@@ -1,7 +1,6 @@
 require('dotenv').config({ path: `${process.cwd()}/.env` });
 const express = require('express');
 const cors = require('cors');
-app.use(cors({ origin: 'http://localhost:5173' })); // Adjust based on frontend URL
 const authRouter = require('./routes/authRoutes');
 const taskRouter = require('./routes/taskRoutes'); // Make sure this points to the correct task routes file
 const userRouter = require('./routes/userRoutes'); // Make sure this points to the correct user routes file
@@ -12,6 +11,8 @@ const globalErrorHandler = require('./controllers/errorController');
 const app = express();
 
 app.use(express.json());
+
+app.use(cors({ origin: ' http://localhost:5173/ '  })); // Adjust based on frontend URL
 
 // all routes will be here
 app.use('/api/v1/auth', authRouter);
